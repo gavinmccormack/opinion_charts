@@ -4,35 +4,51 @@ from pprint import pprint
 
 
 
-class opinionReddit:
+class scraperReddit:
 	""" Simple wrapper class for the praw library for the opinion tools """
-	def __init__():
+	def __init__(self, subreddits=[], comments_enabled=False, limit=10):
 		self.reddit = praw.Reddit(client_id='jIFEM8LpRrB6Jg',
                      client_secret='lvvM7fAWqaoZXY7Pt1jqqmOq36w',
-                     password='',
+                     password='#PASSWORD#',
                      user_agent='Testscript for sentiment analysis',
                      username='eroficgen') ## To be converted to a sensible auth system
+		self.subreddits = []
+		self.set_subreddits(subreddits)
+		self.limit = limit
+		self.comments_enabled = comments_enabled
 
-	def retrieve_subreddits(self, subreddits):
-		""" Takes a dict of subreddits and a number of posts """
-		submission_list = []
-		for subreddit, limit in subreddits.items():
-			submission_list += retrieve_posts(subreddit, limit)
-		return submission_list
+	def set_subreddits(self, subreddits):
+		if isinstance(subreddits, list):
+			self.subreddits = subreddits
+		self.subreddits = [subreddits]
+		return True 
+
+	def set_limit(self, limit):
+		self.limit = limit
+		return True
 
 	# Rather than  a limit this should be a timeframe to keep a rolling list, or, easier than that,
 	# just go far enough back that it can be generated every time.
-	def retrieve_posts(self, subreddit, limit):
+	def get_submissions(self):
 		""" Returns a dict of posts from a subreddit """
-		submissions = reddit.subreddit(subreddit).new(limit=limit)
-
+		submission_list = []
+		for subreddit in self.subreddits:
+			print(subreddit)
+			submission_list += self.reddit.subreddit(subreddit).new(limit=self.limit)
 		# To be checked that the class can be ordered as a dict would
-		ordered_submission_list = sorted(submissions, key=lambda k: k.created)
+		ordered_submission_list = sorted(submission_list, key=lambda k: k.created)
 		return ordered_submission_list
 
 	def get_comments_text(self, submission):
 		""" Get the text of all comments for a submission """
 		pass
+
+	def get_raw_text(self):
+		submissions = get_posts()
+		for submission in submissions:
+			combined_text = submission['selftext'] + " " + submission['title'] 
+			sentiment_item = sentimentItem(submission['created'], combined_text)
+			sentiment_items += [sentiment_item]
 
 	def retrieve_by_keywords(self, keywords):
 		""" Play method at the moment , can be removed """

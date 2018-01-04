@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'opinion_tools',
-    'opinion_visualisations',
+    'webscrapers',
+    'visualisations',
     'googlecharts'
 ]
 
