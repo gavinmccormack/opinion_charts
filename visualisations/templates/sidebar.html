@@ -1,0 +1,97 @@
+<div id="sidebar">
+<h1>Opinion</h1>
+
+<div id="keywords" class="section">
+	<input type="search" placeholder="Term" />
+</div>
+
+<div id="sources" class="section">
+  <label>Sources</label>
+  <ul>
+    <li><input type="checkbox" data-src="banana" checked> 1</li>
+    <li><input type="checkbox" data-src="bonono"> 2</li>
+    <li><input type="checkbox" data-src="benene"> 3</li>
+    <li><input type="checkbox" data-src="bununu"> 4</li>
+  </ul>
+</div>
+
+<div id="selection-dates" class="section">
+	<label>Date range</label>
+	<input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+	<script> $('input[name="daterange"]').daterangepicker(); </script>
+</div>
+
+<div id="limit" class="section">
+	<label>Limit</label>
+	<input type="number" value="50" />
+</div>
+
+<div id="refresh">
+Refresh
+</div>
+
+</div>
+
+
+
+<script>
+
+// Readers
+
+function get_keywords() { return $('#keywords input').val()  }
+function get_date_range() { return $('#selection-dates input').val()  }
+function get_limit() { return $('#limit input').val()  }
+function get_sources() {
+	var sources = $('#sources input').map(function(){
+    	if ( $(this).prop('checked') ) { 
+    		return $(this).data('src'); // If checked return the data-src
+    	}
+	}).get();
+	return sources;
+  }
+
+// Compiler
+
+function get_options_json() {
+    data = JSON.stringify({
+        sources : get_sources(),
+        keywords : get_keywords(),
+        limit : get_limit(),
+        date_range : get_date_range(),
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+    })
+    return data;
+}
+
+// AJAX
+
+function refresh_chart() {
+    $.ajax({
+        url: '/visualisations/charts/line',
+        type: 'POST',
+        dataType: 'json',
+        data: get_options_json(),
+        success : function(data) {
+            $( "#chart-container" ).html(data);
+        },
+        complete : function() {
+            //
+        },
+        error : function() {
+            console.log("Server error on ajax request.");
+        }
+    });
+ }
+
+
+ // Bindings
+
+$(document).ready(function() {
+    $("#refresh").on('click', refresh_chart );
+
+    console.log("Page Events Successfully Registered");
+});
+
+
+
+</script>

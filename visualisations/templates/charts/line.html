@@ -1,0 +1,36 @@
+<!-- Some sidebar malarky. Will need to sort into proper header/etc -->
+{% load googlecharts %}
+
+
+
+{# container #}
+<div id="out"></div>
+{% googlecharts %}
+	{% data values "out_data" %}
+		{% col "string" "Day" %}"{{ val }}"{% endcol %}
+		{% col "number" "Opinion" %}{{ val }}{% endcol %}
+	{% enddata %}
+	{% options "out_options" %}
+		kind: "LineChart",
+		options: {
+			width: 1000,
+			height: 800,
+			backgroundColor: { fill:'transparent' },
+			hAxis: { title: 'Time'},
+			vAxis: { title: 'Opinion'}
+		}
+	{% endoptions %}
+	{% graph "out" "out_data" "out_options" %}
+{% endgooglecharts %}
+
+
+<h2> Google charts test: </h2>
+<ul>
+<li>Add more data on hover</li>
+<li>Add area between point and 0</li>
+<li>Add data grouping. Google charts provides some datatable chart tools</li>
+<li>Controls</li>
+<li>Cumulative average</li>
+<li>Regenerate Chart with parameters</li>
+<li>Related to the above, will also need to store chart data locally and run tasks to retrieve</li>
+</ul>

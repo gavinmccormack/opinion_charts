@@ -2,6 +2,9 @@ import praw
 import datetime
 from pprint import pprint
 
+# Shoehorning in some code for saving to a model here.
+
+
 
 
 class scraperReddit:
@@ -9,9 +12,11 @@ class scraperReddit:
 	def __init__(self, subreddits=[], comments_enabled=False, limit=10):
 		self.reddit = praw.Reddit(client_id='jIFEM8LpRrB6Jg',
                      client_secret='lvvM7fAWqaoZXY7Pt1jqqmOq36w',
-                     password='#PASSWORD#',
+                     password='#',
                      user_agent='Testscript for sentiment analysis',
-                     username='eroficgen') ## To be converted to a sensible auth system
+                     username='eroficgen') 
+                     ## To be converted to a sensible auth system
+                     ## Additionally change app details before this is live anywhere.
 		self.subreddits = []
 		self.set_subreddits(subreddits)
 		self.limit = limit
@@ -20,6 +25,7 @@ class scraperReddit:
 	def set_subreddits(self, subreddits):
 		if isinstance(subreddits, list):
 			self.subreddits = subreddits
+			return True
 		self.subreddits = [subreddits]
 		return True 
 
@@ -33,7 +39,6 @@ class scraperReddit:
 		""" Returns a dict of posts from a subreddit """
 		submission_list = []
 		for subreddit in self.subreddits:
-			print(subreddit)
 			submission_list += self.reddit.subreddit(subreddit).new(limit=self.limit)
 		# To be checked that the class can be ordered as a dict would
 		ordered_submission_list = sorted(submission_list, key=lambda k: k.created)
@@ -41,6 +46,8 @@ class scraperReddit:
 
 	def get_comments_text(self, submission):
 		""" Get the text of all comments for a submission """
+		#print(submission.comments)
+		#print(dir(submission.comments))
 		pass
 
 	def get_raw_text(self):

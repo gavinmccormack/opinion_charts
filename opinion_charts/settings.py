@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webscrapers',
     'visualisations',
-    'googlecharts'
+    'googlecharts',
+    'jsonfield'
 ]
 
 MIDDLEWARE = [
