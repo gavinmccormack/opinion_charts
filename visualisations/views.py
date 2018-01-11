@@ -8,10 +8,10 @@ def index(request):
     context = {}
     
     #Some sample chart code
-    opinion_reddit = scraperReddit(subreddits=['BitcoinMarkets'], limit=100)
+    opinion_reddit = scraperReddit(subreddits=['Bitcoin'], limit=1000)
     submissions = opinion_reddit.get_submissions()
     chart_data = lineChart().reddit(submissions)
 
     #Test context
-    context =  {'values': chart_data}
+    context =  {'chart_data': chart_data}
     return render_to_response('index.html', context)

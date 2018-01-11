@@ -11,16 +11,19 @@ class scraperReddit:
 	""" Simple wrapper class for the praw library for the opinion tools """
 	def __init__(self, subreddits=[], comments_enabled=False, limit=10):
 		self.reddit = praw.Reddit(client_id='jIFEM8LpRrB6Jg',
-                     client_secret='lvvM7fAWqaoZXY7Pt1jqqmOq36w',
-                     password='#',
-                     user_agent='Testscript for sentiment analysis',
-                     username='eroficgen') 
-                     ## To be converted to a sensible auth system
-                     ## Additionally change app details before this is live anywhere.
+					 client_secret='lvvM7fAWqaoZXY7Pt1jqqmOq36w',
+					 redirect_uri='http://jamdigital.tech',
+					 user_agent='Sentiment Analysis Prototype')
+		self.code = "J0XCsi7HY6VkbFry6rlNe_6wnII"
 		self.subreddits = []
 		self.set_subreddits(subreddits)
 		self.limit = limit
 		self.comments_enabled = comments_enabled
+
+	def run_authorization(self):
+		""" Dev script right now. Used for retrieving an access code """
+		from .scripts import retrieve_permanent_auth_token
+		retrieve_permanent_auth_token.main()
 
 	def set_subreddits(self, subreddits):
 		if isinstance(subreddits, list):
