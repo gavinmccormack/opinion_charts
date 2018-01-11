@@ -32,24 +32,25 @@ class BitcoinPrices:
 
 	def get_price_in_range(self, start_date, end_date, ticker='GBP'):
 		""" Return bitcoin date : price dict over a timeframe """
-		def convert_time_to_url_format(date):
-			date = parse(date)
-			date = date.strftime('%Y-%m-%d')
-			print(date)
-			return date
-		try:
-			start_date = convert_time_to_url_format(start_date)
-			end_date = convert_time_to_url_format(end_date)
-		except Exception as e:
-			print(e)
-			return "Unable to parse the start and end dates"
+		def convert_time_to_format(date, date_format='%Y-%m-%d'):
+			""" Should parse most date formats. Defaults to YYYY-MM-DD """
+			try:
+				date = parse(date)
+				date = date.strftime(date_format)
+				return date
+			except Exception as e:
+				print(e)
+				return "Unable to parse this date"
+		
+		start_date = convert_time_to_format(start_date)
+		end_date = convert_time_to_format(end_date)
 		endpoint = 'https://api.coindesk.com/v1/bpi/historical/close.json'
 		endpoint = endpoint + "?start=" + start_date + "&end=" + end_date + "&currency=" + ticker
 		response = requests.get(endpoint)
 		json = response.json()
-		p_json(json['bpi']) # Let's see what we get
-		return json['bpi']
+
+		# For the date formatting here, - is linux and # is windows. Which is a bit frustrating.
+		price_data = {date: convert_time_to_format(date,'%a %b %#d %I:%M:%S %Y') for date, price in json['bpi'].items()}
+		return price_data
 
 
-bp = BitcoinPrices()
-bp.get_price_in_range("Tue Sep 1 23:59:11 2013","Tue Sep 5 23:59:11 2013")

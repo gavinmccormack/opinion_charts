@@ -8,27 +8,31 @@ from pprint import pprint
 
 
 class scraperReddit:
-	""" Simple wrapper class for the praw library for the opinion tools """
+	""" Simple wrapper class for the praw library """
 	def __init__(self, subreddits=[], comments_enabled=False, limit=10):
 		self.reddit = praw.Reddit(client_id='jIFEM8LpRrB6Jg',
 					 client_secret='lvvM7fAWqaoZXY7Pt1jqqmOq36w',
 					 redirect_uri='http://jamdigital.tech',
 					 user_agent='Sentiment Analysis Prototype')
-		self.code = "J0XCsi7HY6VkbFry6rlNe_6wnII"
+
+		# This needs some checking and refreshing code
+		# Or I'm being silly and not quite understanding the "state" parameter's permanent option
+		self.code = "cBepfXwMEJGZGkhL26YNFmC37Rs" 
 		self.subreddits = []
 		self.set_subreddits(subreddits)
 		self.limit = limit
 		self.comments_enabled = comments_enabled
 
 	def run_authorization(self):
-		""" Dev script right now. Used for retrieving an access code """
+		""" Dev script right now. Used for retrieving an access code. 
+			Borrowed from PRAW docs, can be run through on the command line.
+			Would be ideal to automate this as it'll be less ideal for WSGI setups """
 		from .scripts import retrieve_permanent_auth_token
 		retrieve_permanent_auth_token.main()
 
 	def set_subreddits(self, subreddits):
 		if isinstance(subreddits, list):
 			self.subreddits = subreddits
-			return True
 		self.subreddits = [subreddits]
 		return True 
 

@@ -17,7 +17,9 @@
 </ul>
 
 
-
+<p> Prices: 
+	{{ chart_data_prices|safe }}
+</p>
 
 
 
@@ -30,7 +32,7 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable(
-          {{ chart_data|safe}}
+          {{ chart_data_opinion|safe}}
         );
 
         var options = {
