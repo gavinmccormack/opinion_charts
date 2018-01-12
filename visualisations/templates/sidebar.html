@@ -70,16 +70,18 @@ function refresh_chart() {
     $.ajax({
         url: '/visualisations/charts/line/',
         type: 'POST',
-        dataType: 'html',
+        dataType: 'json',
         data: get_options_json(),
         success : function(response) {
-            $( "#chart_div" ).html(response);
+        	// We don't ever reach "Success" with a JSON request because
+        	// it expects a JSON return format, not HTML. Need to fix this !  
         },
-        complete : function() {
-            //
+        complete : function(response) {
+        	console.log(response);
+            $( "#chart_div" ).html(response.responseText);
         },
         error : function(err) {
-        	console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
+            console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
         }
     });
  }
