@@ -66,19 +66,20 @@ function get_options_json() {
 // AJAX
 
 function refresh_chart() {
+	console.log(get_options_json());
     $.ajax({
-        url: '/visualisations/charts/line',
+        url: '/visualisations/charts/line/',
         type: 'POST',
-        dataType: 'json',
+        dataType: 'html',
         data: get_options_json(),
-        success : function(data) {
-            $( "#chart-container" ).html(data);
+        success : function(response) {
+            $( "#chart_div" ).html(response);
         },
         complete : function() {
             //
         },
-        error : function() {
-            console.log("Server error on ajax request.");
+        error : function(err) {
+        	console.log("AJAX error in request: " + JSON.stringify(err, null, 2));
         }
     });
  }

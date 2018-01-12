@@ -15,7 +15,6 @@ class BitcoinPrices:
 		self.get_current_price()
 		pass
 
-
 	def check_connection(self):
 		""" Returns false if API is not responding """
 		response = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json')

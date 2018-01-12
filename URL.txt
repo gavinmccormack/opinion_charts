@@ -1,1 +1,0 @@
-https://www.reddit.com/api/v1/authorize?client_id=jIFEM8LpRrB6Jg&duration=permanent&redirect_uri=http%3A%2F%2Flocalhost%3A8000&response_type=code&scope=creddits+edit+flair+history+identity+modconfig+modcontributors+modflair+modlog+modothers+modposts+modself+modwiki+mysubreddits+privatemessages+read+report+save+submit+subscribe+vote+wikiedit+wikiread&state=65000
