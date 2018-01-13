@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from webscrapers.reddit import scraperReddit
-from webscrapers.bitcoin_api import BitcoinPrices
 from visualisations.data_processors import lineChart
 from django.views.generic import TemplateView
 from django.template import RequestContext
 import json
+
+
+from webscrapers.reddit import scraperReddit, storedReddit
+from webscrapers.bitcoin_api import BitcoinPrices
 
 
 from django.views.decorators.csrf import csrf_exempt ## Need to pass CSRF token to index
@@ -29,6 +31,14 @@ def line_chart(request):
     
     request_data = json.loads(request.body)
 
+    #Testing database retrieval
+    stored = storedReddit(subreddits=['BitcoinMarkets'], limit=100)
+    submissions = stored.submissions()
+    chart_data = lineChart().reddit(submissions)
+    stored_data = lineChart().reddit(submissions)
+    context['chart_data_opinion'] = chart_data
+    return render_to_response('charts/line.html',context)
+
     #unpack json for opinion charts
     sources = request_data['sources']
     limit = int(request_data['limit'])
@@ -36,8 +46,6 @@ def line_chart(request):
     end_date = request_data['date_range'].split('-')[1]
 
     #Some sample chart code for opinion
-    opinion_reddit = scraperReddit(subreddits='BitcoinMarkets', limit=limit)
-    submissions = opinion_reddit.get_submissions()
     chart_data = lineChart().reddit(submissions)
     context['chart_data_opinion'] = chart_data
 
