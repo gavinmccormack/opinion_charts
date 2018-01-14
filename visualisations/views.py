@@ -7,7 +7,7 @@ from django.template import RequestContext
 import json
 
 
-from webscrapers.reddit import scraperReddit, storedReddit
+from webscrapers.reddit import RedditScraper
 from webscrapers.bitcoin_api import BitcoinPrices
 
 
@@ -19,10 +19,15 @@ def index(request):
     return render_to_response('index.html', context)
 
 
+def test_scraper():
+    """ Delete me """
+    scraper = RedditScraper()
+    print(scraper.limit())
+
+
 @csrf_exempt
 def line_chart(request):
     """ Prototype: Display a simple line chart """
-    print('RECEIVED REQUEST: ' + request.method)
     if not request.method == 'POST':
         return HttpResponse("Denied: Requires a POST connection") # Return a status code here
     
@@ -31,27 +36,6 @@ def line_chart(request):
     
     request_data = json.loads(request.body)
 
-    #Testing database retrieval
-    stored = storedReddit(subreddits=['BitcoinMarkets'], limit=100)
-    submissions = stored.submissions()
-    chart_data = lineChart().reddit(submissions)
-    stored_data = lineChart().reddit(submissions)
-    context['chart_data_opinion'] = chart_data
-    return render_to_response('charts/line.html',context)
-
-    #unpack json for opinion charts
-    sources = request_data['sources']
-    limit = int(request_data['limit'])
-    start_date = request_data['date_range'].split('-')[0]
-    end_date = request_data['date_range'].split('-')[1]
-
-    #Some sample chart code for opinion
-    chart_data = lineChart().reddit(submissions)
-    context['chart_data_opinion'] = chart_data
-
-    # Some sample chart code for bitcoin prices
-    bp = BitcoinPrices()
-    price_data = bp.get_price_in_range(start_date,end_date)
-    context['chart_data_prices'] = price_data
+    test_scraper()
 
     return render_to_response('charts/line.html',context)
