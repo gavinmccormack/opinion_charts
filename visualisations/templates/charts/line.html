@@ -1,10 +1,3 @@
-<!-- Some sidebar malarky. Will need to sort into proper header/etc -->
-
-
-
-
-
-
 <h2> Google charts test: </h2>
 <ul>
 <li>Add more data on hover</li>
@@ -17,30 +10,25 @@
 </ul>
 
 
-<p> Prices: 
-	{{ chart_data_prices|safe }}
-</p>
 
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
 
+  function drawChart() {
+    chart_data = [[]];
+    if ("{{ chart_data_opinion|safe}}" != "") { // Avoid errors if we return a blank array from the variable 
+      var chart_data = {{ 'chart_data_opinion|safe}}';
+    }
+    var data = google.visualization.arrayToDataTable( chart_data );
 
-<!--- Sort this into proper code sections -->
+    var options = {
+      title: 'Public Opinion',
+      hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
+      vAxis: {minValue: 0}
+    };
 
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable(
-          {{ chart_data_opinion|safe}}
-        );
-
-        var options = {
-          title: 'Public Opinion',
-          hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
-        };
-
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
+    var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>

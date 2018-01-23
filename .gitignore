@@ -11,6 +11,8 @@ lib64
 .pyc
 .txt
 
+# NPM
+node_modules
 
 
 # More Boilerplate

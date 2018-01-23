@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'core',
     'django.contrib.staticfiles',
     'webscrapers',
     'visualisations',
-    'jsonfield'
+    'jsonfield',
 ]
 
 MIDDLEWARE = [
